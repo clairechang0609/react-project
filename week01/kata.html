@@ -1,0 +1,71 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+<div id="app"></div>
+<input type="text" id="inputByAdd">
+<button id="buttonAdd">新增</button>
+
+<script>
+const data = [
+  {
+    id: 1,
+    name: '測試人員1'
+  },
+  {
+    id: 2,
+    name: '測試人員2'
+  }
+];
+
+// 渲染資料
+// 新增
+// 刪除
+const app = document.querySelector('#app');
+const render = () => {
+  app.innerHTML = data.map(item => {
+    return `<div>
+      ${item.name}
+      <button type="button" class="btnRemove" data-id="${item.id}">刪除</button>
+    </div>`
+  }).join('');
+
+  const btnRemove = document.querySelectorAll('.btnRemove');
+  btnRemove.forEach(item => item.addEventListener('click', (e) => {
+    const id = Number(e.target.dataset.id);
+    removeItem(id);
+  }));
+}
+render();
+
+const inputByAdd = document.querySelector('#inputByAdd');
+const buttonAdd = document.querySelector('#buttonAdd');
+buttonAdd.addEventListener('click', () => {
+  const val = inputByAdd.value;
+  inputByAdd.value = '';
+  addItem(val);
+})
+
+let num = data.length;
+const addItem = (name) => {
+  num++;
+  data.push({
+    id: num,
+    name
+  });
+  render();
+}
+
+const removeItem = (id) => {
+  const index = data.findIndex(item => item.id === id);
+  if (index !== -1) {
+    data.splice(index, 1);
+    render();
+  }
+}
+</script>
+</body>
+</html>
